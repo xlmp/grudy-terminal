@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="Grudy.ResizeMe"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Grudy"
+             mc:Ignorable="d" 
+             d:DesignHeight="93.8" d:DesignWidth="99">
+    <Grid Cursor="SizeWE">
+        <Thumb  Opacity="0.2" Background="#26FFFFFF" HorizontalAlignment="Left" Margin="0,4,0,4" Width="4" Cursor="SizeWE" MouseMove="GridMouseMove" DragDelta="GridDragDelta"/>
+        <Thumb  Opacity="0.2" Background="#26FFFFFF" HorizontalAlignment="Right" Margin="0,4,0,4" Width="4" Cursor="SizeWE" MouseMove="GridMouseMove" DragDelta="GridDragDelta"/>
+
+        <Thumb  Opacity="0.2" Background="#26FFFFFF" VerticalAlignment="Top" Margin="4,0,4,0" Height="4" Cursor="SizeWE" MouseMove="GridMouseMove" DragDelta="GridDragDelta"/>
+        <Thumb  Opacity="0.2" Background="#26FFFFFF" VerticalAlignment="Bottom" Margin="4,0,4,0" Height="4" Cursor="SizeNS" MouseMove="GridMouseMove" DragDelta="GridDragDelta"/>
+
+        <Thumb Opacity="0.2" Background="#26FFFFFF" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0" Width="4" Height="4" Cursor="SizeNWSE" MouseMove="GridMouseMove" DragDelta="GridDragDelta"/>
+        <Thumb Opacity="0.2" Background="#26FFFFFF" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0" Width="4" Height="4" Cursor="SizeNESW" MouseMove="GridMouseMove" DragDelta="GridDragDelta"/>
+
+        <Thumb Opacity="0.2" Background="#26FFFFFF" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="0" Width="4" Height="4" Cursor="SizeNESW" MouseMove="GridMouseMove" DragDelta="GridDragDelta"/>
+        <Thumb Opacity="0.2" Background="#26FFFFFF" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0" Width="4" Height="4" Cursor="SizeNWSE" MouseMove="GridMouseMove" DragDelta="GridDragDelta"/>
+
+    </Grid>
+</UserControl>
