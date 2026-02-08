@@ -8,14 +8,14 @@ using System.Linq;
 namespace Grudy
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for mainWin.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class mainWin : Window
     {        
         RunningCMD Runn;
         dbConfig DBConfig;
         Dictionary<string, string> Macros;
-        public MainWindow()
+        public mainWin()
         {
             InitializeComponent();
             RszMe.SetWindow = this;
@@ -73,9 +73,9 @@ namespace Grudy
             
         }
 
-        terminal_1 CreatTerminal(TabItem e)
+        terminalCtrl CreatTerminal(TabItem e)
         {
-            var t = new terminal_1();
+            var t = new terminalCtrl();
             t.PushCommand += Terminals_PushCommand;
             t.OutCommand += Terminals_OutCommand;
             t.CurrentTabItem = e;
@@ -113,6 +113,8 @@ namespace Grudy
                 Background = Color.FromArgb(50, 0, 0, 0).ToFrozenBrush(),
                 Foreground = Color.FromRgb(30, 30, 30).ToFrozenBrush(),
                 Header = new TabItemHeader() { Text = (tt == null || tt.Name == null ? "Novo Terminal" : tt.Name) },
+                BorderThickness = new Thickness(0,0,0, 0),
+                BorderBrush = null,
             };
             (ti.Header as TabItemHeader).TabItemMe = ti;
             (ti.Header as TabItemHeader).CloseMe += (a, e) =>
@@ -129,7 +131,11 @@ namespace Grudy
             tab.Items.Add(item);
             tab.SelectedIndex = tab.Items.Count - 1;
 
-            tab.Items.Add(new TabItem() { Header = "+", Tag = "ADD" });
+            var addTab = new TabItem() { Header = new TabItemHeaderAction() 
+            { 
+                AddEventClick = (a,b)=>{ NovoTerminal().GetAwaiter(); } 
+            }, Tag = "ADD" };            
+            tab.Items.Add(addTab);
         }
         async Task NovoTerminal()
         {           
@@ -137,7 +143,7 @@ namespace Grudy
             var tati = NewTabItem(null);
             var TT = CreatTerminal(tati);
 
-            var dbTT = await DBConfig.NewTerminalC(TT.Name, TT.CurrentDir);
+            var dbTT = await DBConfig.NewTerminalC(TT.TerminalName, TT.CurrentDir);
             TT.DbTerminal = dbTT;
 
             tati.Content = TT;
@@ -145,56 +151,56 @@ namespace Grudy
 
         }
 
-        terminal_1? CurrentTerminal(TabItem? e = null)
+        terminalCtrl? CurrentTerminal(TabItem? e = null)
         {
             if(e != null && e.Content != null)
             {
-                return e.Content as terminal_1;
+                return e.Content as terminalCtrl;
             }
             if (tab.SelectedIndex == -1) return null;
-            return (tab.Items[tab.SelectedIndex] as TabItem).Content as terminal_1;
+            return (tab.Items[tab.SelectedIndex] as TabItem).Content as terminalCtrl;
         }
 
-        private void Terminals_OutCommand(object? sender, Tuple<terminal_1.OutCommandList, string> e)
+        private void Terminals_OutCommand(object? sender, Tuple<OutCommandList, string> e)
         {
-            var term = (sender as terminal_1);
+            var term = (sender as terminalCtrl);
             switch (e.Item1)
             {
-                case terminal_1.OutCommandList.NEW_TERMINAL:
+                case OutCommandList.NEW_TERMINAL:
                     NovoTerminal().GetAwaiter();
                     break;
 
-                case terminal_1.OutCommandList.CLOSE_ME:
+                case OutCommandList.CLOSE_ME:
                     DBConfig.RemoveTerminal(term.DbTerminal.Id).GetAwaiter();
                     tab.Items.Remove(term.CurrentTabItem);
-                    if (tab.Items.Count > 0)
-                        tab.SelectedIndex = tab.Items.Count - 1;
+                    if (tab.Items.Count > 1)
+                        tab.SelectedIndex = tab.Items.Count - 2;
 
-                    if (tab.Items.Count == 0)
+                    if (tab.Items.Count <= 1)
                         CloseMeAll();
                     break;
 
-                case terminal_1.OutCommandList.WINDOW_MINIMIZE:
+                case OutCommandList.WINDOW_MINIMIZE:
                     WindowState = WindowState.Minimized;
                     break;
 
-                case terminal_1.OutCommandList.CHANGED_CURRENT_DIR:
+                case OutCommandList.CHANGED_CURRENT_DIR:
                     term.DbTerminal.CurrentDir = term.CurrentDir;
                     term.DbTerminal.Name = term.TerminalName;
                     DBConfig.UpdateTerminal(term.DbTerminal).GetAwaiter();
                     break;
 
-                case terminal_1.OutCommandList.CHANGED_TERMINAL_NAME:
+                case OutCommandList.CHANGED_TERMINAL_NAME:
                     (term.CurrentTabItem.Header as TabItemHeader).Text = term.TerminalName;
                     term.DbTerminal.Name = term.TerminalName;
                     DBConfig.UpdateTerminal(term.DbTerminal).GetAwaiter();
                     break;
 
-                case terminal_1.OutCommandList.CLOSE_ALL:
+                case OutCommandList.CLOSE_ALL:
                     CloseMeAll();
                     break;
 
-                case terminal_1.OutCommandList.MACRO_ADD:
+                case OutCommandList.MACRO_ADD:
                     {
                         int p = e.Item2.IndexOf("=");
                         if (p > 0)
@@ -212,14 +218,14 @@ namespace Grudy
                     }
                     break;
 
-                case terminal_1.OutCommandList.MACRO_LIST:
+                case OutCommandList.MACRO_LIST:
                     foreach(var m in Macros)
                     {
                         term.PrintLn($"  {m.Key} = {m.Value}");
                     }
                     break;
 
-                case terminal_1.OutCommandList.INTERRUPT:
+                case OutCommandList.INTERRUPT:
                     if (term.CurrentProcess != null)
                     {
                         term.CurrentProcess.Stop();
@@ -270,7 +276,7 @@ namespace Grudy
 
         private void Terminals_PushCommand(object? sender, string e)
         {
-            var term = (sender as terminal_1);
+            var term = (sender as terminalCtrl);
             if (term == null) return;
 
             string outR = "Not result";
@@ -308,7 +314,8 @@ namespace Grudy
 
             term.CurrentProcess.OutPut += (a, _out_) =>
             {
-                term.PrintLn(_out_ ?? "");
+                if (_out_ != null)
+                    term.PrintLn(_out_ ?? "");
             };
 
             term.Wait(true);

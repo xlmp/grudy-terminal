@@ -1,0 +1,70 @@
+﻿<Window x:Class="Grudy.mainWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Grudy"
+        xmlns:materialDesign="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+        mc:Ignorable="d"
+        Title="Grudy" Height="450" Width="605" Background="Transparent" WindowStyle="None" ResizeMode="NoResize" AllowsTransparency="True" >
+    <Window.Resources>
+        <Style TargetType="TabItem">
+            <Setter Property="Header" Value="Minha Aba" />
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">                        
+                        <Border Name="Border" BorderThickness="0" 
+                                BorderBrush="Transparent" CornerRadius="2" Margin="0" >
+                            <ContentPresenter x:Name="ContentSite"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    ContentSource="Header"
+                                    Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="Black" />                                
+                                <Setter Property="Foreground" Value="White" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="False">
+                                <Setter TargetName="Border" Property="Background" Value="#112211" />
+                                <Setter Property="Foreground" Value="#887788" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid Opacity="1">
+        <Rectangle RadiusX="10" RadiusY="10" Stroke="#FF373737" Fill="#D8232323"></Rectangle>
+        <local:ResizeMe x:Name="RszMe"/>
+        <Grid HorizontalAlignment="Left" Width="48" Margin="4,4,4,4">
+            <Button BorderBrush="Transparent" Background="Transparent" Height="40" Margin="5,5,5,0" VerticalAlignment="Top">
+                <materialDesign:PackIcon Kind="ShareVariant" Height="24" Width="24" Foreground="#D8B6C6D1" />
+            </Button>
+
+            <Button ToolTip="Macro de Script" BorderBrush="Transparent" Background="Transparent" Height="40" Margin="5,53,5,0" VerticalAlignment="Top">
+                <materialDesign:PackIcon Kind="Script" Height="24" Width="24" Foreground="#D8B6C6D1" />
+                <Button.ContextMenu>
+                    <ContextMenu x:Name="MacroScipts">
+                    </ContextMenu>
+                </Button.ContextMenu>
+            </Button>
+
+        </Grid>
+        <TabControl x:Name="tab" Background="Transparent" TabStripPlacement="Bottom" BorderBrush="{x:Null}" Margin="52,4,4,10" BorderThickness="0,0,0,0">
+            <TabItem Header="TESTE">
+                <TabItem.Background>
+                    <LinearGradientBrush EndPoint="0,1">
+                        <GradientStop Color="#FFF0F0F0"/>
+                        <GradientStop Color="#33E5E5E5" Offset="1"/>
+                    </LinearGradientBrush>
+                </TabItem.Background>
+            </TabItem>
+        </TabControl>
+
+
+    </Grid>
+</Window>

@@ -59,9 +59,10 @@ namespace Grudy
         public void Stop()
         {
             if(_process != null)
-            {                
-                _process.Kill();
+            {
                 _process.CloseMainWindow();
+                _process.Kill();
+                //_process.ClosemainWin();
                 _process.Close();
                 _process = null;
             }

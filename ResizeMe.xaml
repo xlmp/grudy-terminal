@@ -5,19 +5,19 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Grudy"
              mc:Ignorable="d" 
-             d:DesignHeight="93.8" d:DesignWidth="99">
+             d:DesignHeight="20" d:DesignWidth="20" Opacity="0.1">
     <Grid Cursor="SizeWE">
-        <Thumb  Opacity="0.2" Background="#26FFFFFF" HorizontalAlignment="Left" Margin="0,4,0,4" Width="4" Cursor="SizeWE" MouseMove="GridMouseMove" DragDelta="GridDragDelta"/>
-        <Thumb  Opacity="0.2" Background="#26FFFFFF" HorizontalAlignment="Right" Margin="0,4,0,4" Width="4" Cursor="SizeWE" MouseMove="GridMouseMove" DragDelta="GridDragDelta"/>
+        <Thumb  Opacity="0.01" Background="#26FFFFFF" HorizontalAlignment="Left" Margin="0,4,0,4" Width="4" Cursor="SizeWE" MouseMove="GridMouseMove" DragDelta="GridDragDelta"/>
+        <Thumb  Opacity="0.01" Background="#26FFFFFF" HorizontalAlignment="Right" Margin="0,4,0,4" Width="4" Cursor="SizeWE" MouseMove="GridMouseMove" DragDelta="GridDragDelta"/>
 
-        <Thumb  Opacity="0.2" Background="#26FFFFFF" VerticalAlignment="Top" Margin="4,0,4,0" Height="4" Cursor="SizeWE" MouseMove="GridMouseMove" DragDelta="GridDragDelta"/>
-        <Thumb  Opacity="0.2" Background="#26FFFFFF" VerticalAlignment="Bottom" Margin="4,0,4,0" Height="4" Cursor="SizeNS" MouseMove="GridMouseMove" DragDelta="GridDragDelta"/>
+        <Thumb Background="#26782C2C" VerticalAlignment="Top" Margin="4,0,4,0" Height="4" Cursor="SizeNS" MouseMove="GridMouseMove" DragDelta="GridDragDelta" Opacity="0.02"/>
+        <Thumb  Opacity="0.01" Background="#26FFFFFF" VerticalAlignment="Bottom" Margin="4,0,4,0" Height="4" Cursor="SizeNS" MouseMove="GridMouseMove" DragDelta="GridDragDelta"/>
 
-        <Thumb Opacity="0.2" Background="#26FFFFFF" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0" Width="4" Height="4" Cursor="SizeNWSE" MouseMove="GridMouseMove" DragDelta="GridDragDelta"/>
-        <Thumb Opacity="0.2" Background="#26FFFFFF" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0" Width="4" Height="4" Cursor="SizeNESW" MouseMove="GridMouseMove" DragDelta="GridDragDelta"/>
+        <Thumb Opacity="0.01" Background="#26FFFFFF" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0" Width="4" Height="4" Cursor="SizeNWSE" MouseMove="GridMouseMove" DragDelta="GridDragDelta"/>
+        <Thumb Opacity="0.01" Background="#26FFFFFF" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0" Width="4" Height="4" Cursor="SizeNESW" MouseMove="GridMouseMove" DragDelta="GridDragDelta"/>
 
-        <Thumb Opacity="0.2" Background="#26FFFFFF" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="0" Width="4" Height="4" Cursor="SizeNESW" MouseMove="GridMouseMove" DragDelta="GridDragDelta"/>
-        <Thumb Opacity="0.2" Background="#26FFFFFF" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0" Width="4" Height="4" Cursor="SizeNWSE" MouseMove="GridMouseMove" DragDelta="GridDragDelta"/>
+        <Thumb Opacity="0.01" Background="#26FFFFFF" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="0" Width="4" Height="4" Cursor="SizeNESW" MouseMove="GridMouseMove" DragDelta="GridDragDelta"/>
+        <Thumb Opacity="0.01" Background="#26FFFFFF" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0" Width="4" Height="4" Cursor="SizeNWSE" MouseMove="GridMouseMove" DragDelta="GridDragDelta"/>
 
     </Grid>
 </UserControl>
