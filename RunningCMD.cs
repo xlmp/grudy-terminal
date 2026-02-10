@@ -65,14 +65,15 @@ namespace Grudy
                 //_process.ClosemainWin();
                 _process.Close();
                 _process = null;
+                Application.Current.Dispatcher.InvokeAsync(() =>
+                {
+                    this.Process_Exited(null, null);
+                });
             }
             if (bgWorker != null)
                 bgWorker.DoWork -= BgWorker_DoWork;
             bgWorker = null;
-            Application.Current.Dispatcher.InvokeAsync(() =>
-            {
-                this.Process_Exited(null, null);
-            });
+            
         }
         private void BgWorker_DoWork(object? sender, DoWorkEventArgs e)
         {
@@ -130,7 +131,9 @@ namespace Grudy
             {
                 this._process = null;
                 if (Exit != null)
+                {                    
                     Exit(this, e);
+                }
             });
         }
     }

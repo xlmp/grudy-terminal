@@ -6,11 +6,11 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>assets\Etermutilities-terminal_36201.ico</ApplicationIcon>
+    <ApplicationIcon>assets\terminal_icon_234774.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="assets\Etermutilities-terminal_36201.ico" />
+    <Content Include="assets\terminal_icon_234774.ico" />
   </ItemGroup>
 
   <ItemGroup>

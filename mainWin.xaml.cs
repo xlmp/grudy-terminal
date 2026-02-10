@@ -63,13 +63,7 @@ namespace Grudy
 
         private void Tab_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            try
-            {
-                this.DragMove();
-            }
-            catch (Exception)
-            {
-            }
+            
             
         }
 
@@ -348,6 +342,27 @@ namespace Grudy
             if (outR.Length > 0 && !term.IsWaint)
             {
                 term.PrintLn(outR);
+            }
+        }
+
+        private void Min_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void Close_Click(object sender, RoutedEventArgs e)
+        {
+            CloseMeAll();
+        }
+
+        private void Label_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                this.DragMove();
+            }
+            catch (Exception)
+            {
             }
         }
     }

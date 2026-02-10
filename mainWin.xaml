@@ -13,7 +13,7 @@
             <Setter Property="Padding" Value="10,5"/>
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="TabItem">                        
+                    <ControlTemplate TargetType="TabItem">
                         <Border Name="Border" BorderThickness="0" 
                                 BorderBrush="Transparent" CornerRadius="2" Margin="0" >
                             <ContentPresenter x:Name="ContentSite"
@@ -24,7 +24,7 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="Border" Property="Background" Value="Black" />                                
+                                <Setter TargetName="Border" Property="Background" Value="Black" />
                                 <Setter Property="Foreground" Value="White" />
                             </Trigger>
                             <Trigger Property="IsSelected" Value="False">
@@ -40,6 +40,12 @@
     <Grid Opacity="1">
         <Rectangle RadiusX="10" RadiusY="10" Stroke="#FF373737" Fill="#D8232323"></Rectangle>
         <local:ResizeMe x:Name="RszMe"/>
+        <Grid Height="32" Margin="52,4,4,0" VerticalAlignment="Top">
+            <Label Content="Grudy" Margin="0,0,55,0" Foreground="#FF978A8A" Padding="10,0,0,0" PreviewMouseDown="Label_PreviewMouseDown" VerticalContentAlignment="Center"/>
+            <Button x:Name="btnClose" Content="X" HorizontalAlignment="Right" Width="24" Background="#FF591A1A" BorderBrush="{x:Null}" BorderThickness="0,0,0,0" Foreground="#FFBCBEA2" Click="Close_Click" Margin="0,0,0,0"/>
+            <Button x:Name="btnMin" Content="-" HorizontalAlignment="Right" Width="24" Background="#FF1A1E59" BorderBrush="{x:Null}" BorderThickness="0,0,0,0" Foreground="#FFBCBEA2" Click="Min_Click" Margin="0,0,28,0"/>
+
+        </Grid>
         <Grid HorizontalAlignment="Left" Width="48" Margin="4,4,4,4">
             <Button BorderBrush="Transparent" Background="Transparent" Height="40" Margin="5,5,5,0" VerticalAlignment="Top">
                 <materialDesign:PackIcon Kind="ShareVariant" Height="24" Width="24" Foreground="#D8B6C6D1" />
@@ -54,7 +60,7 @@
             </Button>
 
         </Grid>
-        <TabControl x:Name="tab" Background="Transparent" TabStripPlacement="Bottom" BorderBrush="{x:Null}" Margin="52,4,4,10" BorderThickness="0,0,0,0">
+        <TabControl x:Name="tab" Background="Transparent" TabStripPlacement="Bottom" BorderBrush="{x:Null}" Margin="52,41,4,10" BorderThickness="0,0,0,0">
             <TabItem Header="TESTE">
                 <TabItem.Background>
                     <LinearGradientBrush EndPoint="0,1">

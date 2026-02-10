@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -17,9 +18,10 @@ namespace Grudy
         public event EventHandler<string> PushCommand;
         public event EventHandler<Tuple<OutCommandList, string>> OutCommand;
 
-        string msgPrompt = "#> ";
+        string msgPrompt = "$> ";
         public string CurrentDir = "c:\\";
         int StartText = 0;
+        TextPointer? StartPromptPosition = null;
         int PromptLen = 0;
 
         List<string> HistoriCommands { get; set; } = null;
@@ -64,13 +66,47 @@ namespace Grudy
 
         private void term_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            Key[] keysT = [Key.Up, Key.Down, Key.Left, Key.Right];
+            Key[] keysT = [Key.Up, Key.Down, Key.Left, Key.Right, Key.LeftCtrl, Key.RightCtrl];
+
+            if(Keyboard.Modifiers == ModifierKeys.Windows && Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                if(e.Key == Key.Down)
+                {
+                    this.CallOutCommandList(OutCommandList.WINDOW_MINIMIZE);
+
+                }
+                e.Handled = true;
+            }
 
             if (e.Key == Key.C && Keyboard.Modifiers == ModifierKeys.Control)
             {
+                if(CurrentProcess == null && !term.Selection.IsEmpty)
+                {
+                    Clipboard.SetText(term.Selection.Text);
+                }
                 if (CurrentProcess != null)
                     CurrentProcess.Stop();
                 this.CallOutCommandList(OutCommandList.INTERRUPT);
+            }
+
+            if (e.Key == Key.A && Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                e.Handled = true;
+                TextPointer startPos = this.StartPromptPosition;
+                TextPointer endPos = term.Document.ContentEnd;
+
+                if (startPos != null && endPos != null)
+                {
+                    term.Selection.Select(startPos, endPos);
+                    term.Focus();
+                }
+            }
+            if (e.Key == Key.Home)
+            {
+                e.Handled = true;
+                TextPointer position = this.StartPromptPosition;
+                term.CaretPosition = position;
+                term.Focus();
             }
 
             if (this.isWaint)
@@ -79,7 +115,7 @@ namespace Grudy
                 return;
             }
 
-            if (e.Key == Key.Back && term.SelectionStart() <= this.StartText)
+            if (e.Key == Key.Back && term.SelectPromptPoistion(StartPromptPosition) <= 0)// term.SelectionStart() <= this.StartText)
             {
                 e.Handled = true;
             }
@@ -106,7 +142,7 @@ namespace Grudy
                 //if (e.Key == Key.Up) HistoriCommandsCurrent++;
 
             }
-            else if (term.SelectionStart() < this.StartText && !keysT.Contains(e.Key))
+            else if (term.SelectPromptPoistion(this.StartPromptPosition) == -1 && !keysT.Contains(e.Key))
             {
                 term.CaretPosition = term.Document.ContentEnd;
                 this.term.ScrollToEnd();
@@ -124,8 +160,8 @@ namespace Grudy
             else if (e.Key == Key.Enter)
             {
                 e.Handled = true;
-                this.CapturCommand();                
-                this.ViPrompt();
+                this.CapturCommand();               
+                
             }
         }
         void ViPrompt(bool addBr = true)
@@ -147,6 +183,7 @@ namespace Grudy
             term.CaretPosition = term.Document.ContentEnd;
 
             this.StartText = term.TextLength();
+            this.StartPromptPosition = term.CaretPosition.GetPositionAtOffset(0, LogicalDirection.Backward);
             this.PromptLen = _p.Length;
             //term.SelectionStart(this.StartText);
             term.Focus();
@@ -175,9 +212,9 @@ namespace Grudy
 
             //this.term.Document.Blocks.Add(new Paragraph(new Run(value)));
             ////this.term.Text += $"{value}";
-            this.StartText = term.TextLength();
+            //this.StartText = term.TextLength();
             ////term.SelectionStart = this.StartText;
-            //term.CaretPosition = term.Document.ContentEnd;
+            term.CaretPosition = this.StartPromptPosition;
             //term.Focus();
 
         }
@@ -188,12 +225,12 @@ namespace Grudy
         public Boolean IsWaint { get => this.isWaint; }
         Boolean isWaint { get; set; } = false;
         public void Wait(Boolean e)
-        {
-            this.isWaint = e;
+        {            
             if (e == false)
             {
                 this.ViPrompt();
             }
+            this.isWaint = e;
         }
         public bool CallPushCommand(string command, bool addPrompt = false)
         {
@@ -221,15 +258,19 @@ namespace Grudy
                 if (chk != null)
                 {
                     chk.Method(chk);
+                    if (chk.NewLine){
+                        PrintLn("");
+                    }
+                    this.ViPrompt(chk.NewLine);
                 }
                 else if (PushCommand != null)
                 {
                     PushCommand(this, cmd);
-
                 }
                 else
                 {
                     PrintLn("Comando não encontrado");
+                    this.ViPrompt();
                 }
                 term.IsReadOnly = false;
 
@@ -249,7 +290,7 @@ namespace Grudy
                 string lista = String.Join("\n", localCommands.Select(e => $"{e.Command} - {e.Help}").ToList());
                 this.PrintLn(lista);
             }));
-            localCommands.Add(new LocalCommands("cls", "Limpar a tela", "", () => { this.term.TextClear(); }));
+            localCommands.Add(new LocalCommands("cls", "Limpar a tela", "", () => { this.term.TextClear(); }) { NewLine = false });
             localCommands.Add(new LocalCommands("time", "Mostra a hora", "", () => { this.PrintLn($"Hora Agora: {(DateTime.Now.ToString("HH:mm:ss"))}"); }));
             localCommands.Add(new LocalCommands("day", "Mostra a hora", "", () => { this.PrintLn($"Hoje: {(DateTime.Now.ToString("dd/MM/yyyy"))}"); }));
             localCommands.Add(new LocalCommands("new", "Novo Terminal", "", () => { this.CallOutCommandList(OutCommandList.NEW_TERMINAL); }));
@@ -325,6 +366,7 @@ namespace Grudy
             public Action<LocalCommands> Method { get; set; }
             public string Help { get; set; }
             public string Manual { get; set; }
+            public bool NewLine { get; set; } = true;
             public LocalCommands(string name, string help, string manual, Action<LocalCommands> method)
             {
                 this.Command = name;
@@ -360,18 +402,25 @@ namespace Grudy
             public string GetArguments { get => Arguments; }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender == btnClose)
-                CallOutCommandList(OutCommandList.CLOSE_ALL);
-
-            if (sender == btnMin)
-                CallOutCommandList(OutCommandList.WINDOW_MINIMIZE);
-        }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             CallOutCommandList(OutCommandList.NEW_TERMINAL);
+        }
+
+        private void term_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+        }
+
+        private void term_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+            if (Clipboard.ContainsText() && term.SelectionStart() >= this.StartText)
+            {
+                string texto = Clipboard.GetText();
+                // Insere na posição atual do cursor
+                term.CaretPosition.InsertTextInRun(texto);
+            }
         }
     }
 
@@ -413,6 +462,18 @@ namespace Grudy
 
             // Calcula a quantidade de "símbolos" desde o início
             return startDoc.GetOffsetToPosition(selectionStart);
+        }
+
+        public static int SelectPromptPoistion(this RichTextBox rtf, TextPointer? starPrompt)
+        {
+            //-1 ANTES do prompt
+            //0 na mesma
+            //1 DEPOIS
+            int P = starPrompt.GetOffsetToPosition(rtf.Selection.Start);
+            if (P < 0) return -1;
+            if (P == 0) return 0;
+            if (P > 0) return 1;
+            return -1;
         }
         public static void SelectionStart(this RichTextBox rtf, int pos)
         {

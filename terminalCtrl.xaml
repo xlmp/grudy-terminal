@@ -7,8 +7,8 @@
              xmlns:materialDesign="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
              mc:Ignorable="d" 
              d:DesignHeight="189.733" d:DesignWidth="403.2">
-    <Grid>
-        <RichTextBox x:Name="term" FontFamily="Consolas" FontSize="14" Background="#0C000000" Foreground="#FF7EE07E" VerticalScrollBarVisibility="Visible" PreviewKeyDown="term_PreviewKeyDown" Margin="0,29,0,0" BorderBrush="{x:Null}" BorderThickness="0,0,0,0" Padding="5,2,0,0" AcceptsReturn="False">
+    <Grid Background="#3F000000">
+        <RichTextBox x:Name="term" FontFamily="Cascadia Mono" FontSize="14" Background="#0C000000" Foreground="#FFC9E9C9" VerticalScrollBarVisibility="Visible" PreviewKeyDown="term_PreviewKeyDown" BorderBrush="{x:Null}" BorderThickness="0,0,0,0" Padding="5,2,0,0" AcceptsReturn="False" PreviewMouseRightButtonDown="term_PreviewMouseRightButtonDown" PreviewMouseDown="term_MouseDown" ContextMenu="{x:Null}">
             <FlowDocument>
                 <Paragraph>
                     <Run Text="Terminal"/>
@@ -16,11 +16,5 @@
             </FlowDocument>
         </RichTextBox>
         <!--<TextBox x:Name="term" TextWrapping="Wrap" Text="TextBox" FontFamily="Consolas" FontSize="14" Background="#0C000000" Foreground="#FF7EE07E" VerticalScrollBarVisibility="Visible" PreviewKeyDown="term_PreviewKeyDown" Margin="0,29,0,16" BorderBrush="{x:Null}" BorderThickness="0,0,0,0" Padding="5,2,0,0"/>-->
-        <Label Content="Grudy" Height="24" VerticalAlignment="Top" Margin="0,0,48,0" Foreground="#FF978A8A" Padding="10,1,5,1"/>
-        <Button x:Name="btnClose" Content="X" HorizontalAlignment="Right" Height="24" VerticalAlignment="Top" Width="24" Background="#FF591A1A" BorderBrush="{x:Null}" BorderThickness="0,0,0,0" Foreground="#FFBCBEA2" Click="Button_Click"/>
-        <Button x:Name="btnMin" Content="-" HorizontalAlignment="Right" Height="24" VerticalAlignment="Top" Width="24" Background="#FF1A1E59" BorderBrush="{x:Null}" BorderThickness="0,0,0,0" Foreground="#FFBCBEA2" Click="Button_Click" Margin="0,0,24,0"/>
-        <Grid Height="16" VerticalAlignment="Bottom">
-            <Button Click="Button_Click_1" BorderBrush="Transparent" Background="Transparent" Height="16" VerticalAlignment="Center" HorizontalAlignment="Left" Width="16"/>
-        </Grid>
     </Grid>
 </UserControl>
