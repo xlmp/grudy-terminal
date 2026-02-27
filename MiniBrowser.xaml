@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="Grudy.MiniBrowser"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Grudy"
+             mc:Ignorable="d" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid x:Name="gmain" Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition x:Name="gRow1" Height="30"/>
+            <RowDefinition x:Name="gRow2" Height="1*"/>
+            <RowDefinition x:Name="gRow3" Height="16"/>
+        </Grid.RowDefinitions>
+        <Grid x:Name="gTools" Margin="0,0,0,0" Grid.Row="0">
+            <Grid.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFCDD2BA"/>
+                        <GradientStop Color="White" Offset="1"/>
+                    </LinearGradientBrush>
+                </Grid.Background>
+            <Button HorizontalAlignment="Left" Width="40" BorderBrush="{x:Null}" Background="#FFF3F3F3" Click="Button_Click_1" Margin="2,2,0,2">
+                <materialDesign:PackIcon Kind="ChevronLeft" Height="16" Width="16" />
+            </Button>
+            <Button HorizontalAlignment="Left" Margin="44,2,0,2" Width="40" BorderBrush="{x:Null}" Background="#FFF3F3F3" Click="Button_Click_2">
+                <materialDesign:PackIcon Kind="ChevronRight" Height="16" Width="16" />
+            </Button>
+            <TextBox x:Name="txt_url" Margin="89,2,39,4" TextWrapping="Wrap" Text="http://url.com" Padding="4,5,0,0" KeyDown="txt_url_KeyDown" BorderBrush="{x:Null}" Background="#CCFFFFFF" BorderThickness="0,0,0,0"/>
+        </Grid>
+        <Grid x:Name="gWeb" Margin="0" Grid.Row="1"/>
+        <Label x:Name="lbStatus" Padding="5,0,0,0" FontSize="10" Grid.Row="2">Carregando...</Label>
+        <Button Margin="0,2,2,2" BorderThickness="0,0,0,0" Background="#FFFAFAFA" FontSize="14" Foreground="#FF985252" Click="Button_Click" HorizontalAlignment="Right" Width="35">
+            <materialDesign:PackIcon Kind="WindowClose" Height="16" Width="16" />
+        </Button>
+    </Grid>
+</UserControl>

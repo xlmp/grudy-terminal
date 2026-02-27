@@ -41,13 +41,46 @@ namespace Grudy
 
             this.HelpeLis();
 
-
+            edit.Exit += (a, b) =>
+            {
+                ModoView = TMODOVIEW.TERMINAL;
+            };
         }
+
+        TMODOVIEW ModoView
+        {
+            set
+            {
+                switch (value)
+                {
+                    case TMODOVIEW.EDITNOTE:
+                        webb.Visibility = Visibility.Hidden;
+                        edit.Visibility = Visibility.Hidden;
+                        term.Visibility = Visibility.Visible;
+                        return;
+
+                    case TMODOVIEW.MINIBROW:
+                        term.Visibility = Visibility.Hidden;
+                        edit.Visibility = Visibility.Hidden;
+                        webb.Visibility = Visibility.Visible;
+                        return;
+
+                    case TMODOVIEW.TERMINAL:
+                        webb.Visibility = Visibility.Hidden;
+                        edit.Visibility = Visibility.Hidden;
+                        term.Visibility = Visibility.Visible;
+                        return;
+                }
+            }            
+        }
+
         bool Initialize = false;
         private void Terminal_1_Loaded(object sender, RoutedEventArgs e)
         {
             if (Initialize)
                 return;
+            
+            ModoView = TMODOVIEW.TERMINAL;
 
             Initialize = true;
             term.IsReadOnly = true;
@@ -333,6 +366,18 @@ namespace Grudy
                 TerminalName = cmd.GetArguments;
                 this.CallOutCommandList(OutCommandList.CHANGED_TERMINAL_NAME, cmd.GetArguments);
             }));
+
+            localCommands.Add(new LocalCommands("edit", "EDITIIII", "", (cmd) => {
+                term.Visibility = Visibility.Hidden;
+                edit.OpenEdit(cmd.GetArguments, this.CurrentDir);
+                ModoView = TMODOVIEW.EDITNOTE;
+            }));
+
+            localCommands.Add(new LocalCommands("web", "Web Navegador", "", (cmd) => {
+                term.Visibility = Visibility.Hidden;
+                webb.Navegate(cmd.GetArguments, this.CurrentDir);
+                ModoView = TMODOVIEW.MINIBROW;
+            }));
         }
 
         void CallOutCommandList(OutCommandList e, string? argus = null)
@@ -421,6 +466,13 @@ namespace Grudy
                 // Insere na posição atual do cursor
                 term.CaretPosition.InsertTextInRun(texto);
             }
+        }
+
+        enum TMODOVIEW
+        {
+            TERMINAL = 1,
+            MINIBROW = 2,
+            EDITNOTE = 3
         }
     }
 

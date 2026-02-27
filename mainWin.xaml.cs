@@ -15,9 +15,19 @@ namespace Grudy
         RunningCMD Runn;
         dbConfig DBConfig;
         Dictionary<string, string> Macros;
+        wSplash splash;
         public mainWin()
         {
             InitializeComponent();
+            splash = new wSplash();            
+            splash.Show();
+
+            Initialized += (a, b) =>
+            {
+                splash.Owner = this;
+            };
+
+
             RszMe.SetWindow = this;
 
             tab.Items.Clear();
@@ -28,8 +38,10 @@ namespace Grudy
             
             tab.MouseDown += Tab_MouseDown;
 
-            Loaded += (a, b) =>
+            Loaded += async (a, b) =>
             {
+                splash.Owner = this;
+                splash.Topmost = true;
                 Macros = DBConfig.Macros().GetAwaiter().GetResult();
                 LoadTerminais().GetAwaiter();
                 foreach(var mm in Macros)
@@ -37,6 +49,9 @@ namespace Grudy
                     var mn = new MenuItem() { Header = mm.Key };
                     MacroScipts.Items.Add(mn);
                 }
+                await splash.WaitSeg();
+                splash.CloseMe();
+                splash = null;
             };
 
             //MacroScipts.Items.Add(new MenuItem() { Header = "Criar Macro" });
@@ -263,7 +278,7 @@ namespace Grudy
 
         void CloseMeAll()
         {
-            var r = MessageBox.Show("Fechar todos os terminais do Grudy", "Tem Certeza disso!?", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            var r = TMessageBox.Show(this, "Fechar todos os terminais do Grudy", "Tem Certeza disso!?", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (r == MessageBoxResult.Yes)
                 Close();
         }
@@ -347,7 +362,12 @@ namespace Grudy
 
         private void Min_Click(object sender, RoutedEventArgs e)
         {
-            WindowState = WindowState.Minimized;
+            if (sender == btnMin)
+                WindowState = WindowState.Minimized;
+            else if(WindowState == WindowState.Normal)
+                WindowState = WindowState.Maximized;
+            else if (WindowState == WindowState.Maximized)
+                WindowState = WindowState.Normal;
         }
 
         private void Close_Click(object sender, RoutedEventArgs e)

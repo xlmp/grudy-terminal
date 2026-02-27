@@ -1,0 +1,22 @@
+﻿<Window x:Class="Grudy.wSplash"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Grudy"
+        mc:Ignorable="d"
+        Title="wSplash" Height="130" Width="422" ResizeMode="NoResize" WindowStyle="None" AllowsTransparency="True" Background="{x:Null}" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Rectangle Margin="0" RadiusX="10" RadiusY="10" Fill="#FF616161">
+            <Rectangle.Stroke>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#7FFFFFFF"/>
+                    <GradientStop Color="White" Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Stroke>
+        </Rectangle>
+        <Label Content="GRUDY TERMINAL" HorizontalAlignment="Left" Margin="85,25,0,0" VerticalAlignment="Top" FontSize="29" FontStyle="Italic" FontStretch="Expanded" Foreground="#FFD7E2A9" FontFamily="Consolas"/>
+        <ProgressBar x:Name="process" HorizontalAlignment="Center" Height="28" Margin="0,81,0,0" VerticalAlignment="Top" Width="402" Value="54" Maximum="1000"/>
+
+    </Grid>
+</Window>
